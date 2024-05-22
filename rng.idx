@@ -1,0 +1,8 @@
+nimTitle	rng	rng.html	module src/rng		0
+nim	randint	rng.html#randint,int	proc randint(limit: int): int		3
+nim	rand	rng.html#rand,int	proc rand(dig: int): int		14
+nim	sample	rng.html#sample,openArray[T]	proc sample[T](a: openArray[T]): T		26
+nim	sample	rng.html#sample,string	proc sample(a: string): char		34
+nim	randch	rng.html#randch,seq[char]	proc randch(letters: seq[char] = defaultAsciiTable): char		43
+nim	randstr	rng.html#randstr,int,seq[char]	proc randstr(length: int = 16; table: seq[char] = defaultAsciiTable): string		53
+nimgrp	sample	rng.html#sample-procs-all	proc		26
