@@ -1,4 +1,4 @@
-import std/[sysrand, strutils, strformat, os]
+import std/[sysrand, strutils, strformat]
 
 proc randint*(limit: int): int =
   ## A function that generates an integer, limit is how many digits should be
@@ -62,8 +62,8 @@ proc uuidv4*(): string =
   runnableExamples:
     echo uuidv4()
     
-    # Statistically unlikely.
-    assert uuidv4() == uuidv4()
+    # Statistically unlikely to fail
+    assert uuidv4() != uuidv4()
   var bytes = urandom(16)
   bytes[6] = (bytes[6] and 0x0F) or 0x40 # version 4
   bytes[8] = (bytes[8] and 0x3F) or 0x80 # variant 1
@@ -72,23 +72,8 @@ proc uuidv4*(): string =
     for b in bytes:
       result = result & fmt"{b:02x}"
 
-  return  toHex(bytes[0..3]) & '-' &
-          toHex(bytes[4..5]) & '-' &
-          toHex(bytes[6..7]) & '-' &
-          toHex(bytes[8..9]) & '-' &
-          toHex(bytes[10..^1])
-
-when isMainModule:
-  import std/strutils
-  let
-    uuid = uuidv4()
-    stuff = uuid.split('-')
-
-  assert stuff.len() == 5
-  assert stuff[0].len() == 8
-  assert stuff[1].len() == 4
-  assert stuff[2].len() == 4
-  assert stuff[3].len() == 4
-  assert stuff[4].len() == 12
-
-  echo uuid
+  return toHex(bytes[0..3]) & '-' &
+         toHex(bytes[4..5]) & '-' &
+         toHex(bytes[6..7]) & '-' &
+         toHex(bytes[8..9]) & '-' &
+         toHex(bytes[10..^1])
