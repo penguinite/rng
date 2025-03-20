@@ -1,4 +1,4 @@
-import std/[sysrand, strutils]
+import std/[sysrand, strutils, strformat, os]
 
 proc randint*(limit: int): int =
   ## A function that generates an integer, limit is how many digits should be
@@ -39,18 +39,12 @@ proc sample*(a: string): char =
     assert sample(magicalString) in magicalString
   return a[rand(high(a))]
 
-const defaultAsciiTable = @['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','1','2','3','4','5','6','7','8','9','0'] 
-proc randch*(letters: seq[char] = defaultAsciiTable): char = 
-  ## Returns a random character in an ASCII table
-  let length = high(letters)
-  
-  let num = int(urandom(1)[0])
-  if num > length or num < 0:
-    return letters[rand(length)]
-  else:
-    return letters[num]
+const defaultAsciiTable = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','1','2','3','4','5','6','7','8','9','0']
+proc randch*(letters: openArray[char] = defaultAsciiTable): char = 
+  ## Returns a random character
+  return letters[rand(letters.high)]
 
-proc randstr*(length: int = 16, table: seq[char] = defaultAsciiTable): string = 
+proc randstr*(length: int = 16, table:openArray[char] = defaultAsciiTable): string = 
   ## Returns a random string, 
   ## A function to generate a safe random string.
   runnableExamples:
@@ -59,3 +53,42 @@ proc randstr*(length: int = 16, table: seq[char] = defaultAsciiTable): string =
   for i in 1..length:
     result.add(randch(table))
   return result
+
+proc uuidv4*(): string =
+  ## Generates a UUID (version 4).
+  ## This type of UUID is completely random.
+  ## 
+  ## This implementation is based on nim-uuid4 by Matt Cooper (@vtbassmatt on GitHub)
+  runnableExamples:
+    echo uuidv4()
+    
+    # Statistically unlikely.
+    assert uuidv4() == uuidv4()
+  var bytes = urandom(16)
+  bytes[6] = (bytes[6] and 0x0F) or 0x40 # version 4
+  bytes[8] = (bytes[8] and 0x3F) or 0x80 # variant 1
+
+  proc toHex(bytes: seq[byte]): string =
+    for b in bytes:
+      result = result & fmt"{b:02x}"
+
+  return  toHex(bytes[0..3]) & '-' &
+          toHex(bytes[4..5]) & '-' &
+          toHex(bytes[6..7]) & '-' &
+          toHex(bytes[8..9]) & '-' &
+          toHex(bytes[10..^1])
+
+when isMainModule:
+  import std/strutils
+  let
+    uuid = uuidv4()
+    stuff = uuid.split('-')
+
+  assert stuff.len() == 5
+  assert stuff[0].len() == 8
+  assert stuff[1].len() == 4
+  assert stuff[2].len() == 4
+  assert stuff[3].len() == 4
+  assert stuff[4].len() == 12
+
+  echo uuid
