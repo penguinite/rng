@@ -1,8 +1,6 @@
 # nim-rng
 
-Credit: *The `uuidv4` is based on on nim-uuid4 by Matt Cooper (@vtbassmatt on GitHub)*
-
-Note: *This branch adds an extra procedure named `uuidv4` which generates UUIDs version 4 (completely random UUIDs) using the `std/sysrand` library.*
+Credit: *The `uuidv4` proc is based on on nim-uuid4 by Matt Cooper (@vtbassmatt on GitHub)*
 
 Very basic wrapper over `std/sysrand`, you might be able to use this as a **somewhat** cryptographically-secure drop-in replacement for `std/random`
 
