@@ -1,6 +1,6 @@
 # nim-rng
 
-**Migration notice:** The git repository for this project has moved to [https://codeberg.org/onbox/rng](https://codeberg.org/onbox/rng), this link will still work but it will not contain any new updates. Documentation for this project is available at [https://pony.biz/rng/](https://pony.biz/rng/)
+**Migration notice:** The git repository for this project has moved to [https://codeberg.org/onbox/rng](https://codeberg.org/onbox/rng), this link will still work but it will not contain any new updates. Documentation for this project is available at [https://docs.penguinite.dev/rng/](https://docs.penguinite.dev/rng/)
 
 ---
 
